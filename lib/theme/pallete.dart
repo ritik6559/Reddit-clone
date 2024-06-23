@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class Pallete {
@@ -11,7 +10,12 @@ class Pallete {
   static var blueColor = Colors.blue.shade300;
 
   // Themes
-  static var darkModeAppTheme = ThemeData.dark().copyWith(
+  static ThemeData darkModeAppTheme = ThemeData(
+    colorScheme:  ColorScheme.dark(
+      primary: Colors.black,
+      onPrimary: Colors.grey.shade300,
+      inversePrimary: Colors.white,
+    ),
     scaffoldBackgroundColor: blackColor,
     cardColor: greyColor,
     appBarTheme: const AppBarTheme(
@@ -24,9 +28,16 @@ class Pallete {
       backgroundColor: drawerColor,
     ),
     primaryColor: redColor,
+    textTheme: const TextTheme(
+        bodyMedium: TextStyle(fontSize: 16, color: Colors.white)),
   );
 
-  static var lightModeAppTheme = ThemeData.light().copyWith(
+  static var lightModeAppTheme = ThemeData(
+    colorScheme:  ColorScheme.light(
+      primary: Colors.white,
+      onPrimary: Colors.grey.shade300,
+      inversePrimary: Colors.black
+    ),
     scaffoldBackgroundColor: whiteColor,
     cardColor: greyColor,
     appBarTheme: const AppBarTheme(
