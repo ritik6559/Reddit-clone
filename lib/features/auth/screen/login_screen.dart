@@ -1,96 +1,59 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:reddit_clone/components/sigin_button.dart';
+import 'package:reddit_clone/components/signin_button.dart';
 import 'package:reddit_clone/core/constants/constants.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
+        title: Image.asset(
+          Constants.logoPath,
+          height: 40,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {},
+            child:  Text(
+              "Skip ",
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.inversePrimary,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          )
+        ],
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset(
-                Constants.logoPath,
-                height: 70,
-                width: 70,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Text(
-                "Log in to Reddit",
-                style: TextStyle(
-                  fontWeight: FontWeight.w800,
-                  fontSize: 30,
-                ),
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              LoginTile(
-                  onTap: () {},
-                  text: "Continue with phone number",
-                  imagePath: FontAwesomeIcons.mobile),
-              const SizedBox(
-                height: 10,
-              ),
-              LoginTile(
-                  onTap: () {},
-                  text: "Continue with Google",
-                  imagePath: FontAwesomeIcons.google),
-              const SizedBox(
-                height: 10,
-              ),
-              LoginTile(
-                  onTap: () {},
-                  text: "Use email or password",
-                  imagePath: FontAwesomeIcons.user),
-              const Spacer(),
-              Column(
-                children: [
-                  const Divider(),
-                  const SizedBox(
-                    height: 10,
+              const SizedBox(height: 30),
+                const Text(
+                  'Dive into anything',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 0.5,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "Don't have an account?",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      TextButton(
-                        onPressed: () {},
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: Theme.of(context).colorScheme.onPrimary,
-                          ),
-                          child: const Text(
-                            "Sign up",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
+                ),
+                const SizedBox(height: 30),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.asset(
+                    Constants.loginEmotePath,
+                    height: 400,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const  SignInButton(),
             ],
           ),
         ),
