@@ -17,7 +17,7 @@ class SignInButton extends ConsumerWidget {
     return GestureDetector(
       onTap: () => signInWithGoogle(ref),
       child: Container(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(
           border:
               Border.all(color: Theme.of(context).colorScheme.inversePrimary),
@@ -29,7 +29,7 @@ class SignInButton extends ConsumerWidget {
           children: [
             Image.asset(
               Constants.googlePath,
-              height: 30,
+              height: 40,
             ),
             const Text(
               "Continue with google",
