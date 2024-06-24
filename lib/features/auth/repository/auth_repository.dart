@@ -34,7 +34,7 @@ class AuthRepository {
   CollectionReference get _users =>
       _firestore.collection(FirebaseConstants.usersCollection);
 
-  Stream<User?> get authStateChange => _auth.authStateChanges();
+  Stream<User?> get authStateChange => _auth.authStateChanges();//it is used when we need to check whether user is signed in or not.
 
   FutureEither<UserModel> signInWithGoogle() async {
     try {
@@ -46,11 +46,11 @@ class AuthRepository {
           accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
 
       UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
+          await _auth.signInWithCredential(credential);//all of this is standard code to get all the google accounts available on the device and to select an account to sign in the user.
 
       UserModel userModel;
 
-      if (userCredential.additionalUserInfo!.isNewUser) {
+      if (userCredential.additionalUserInfo!.isNewUser) {//if user is a new user then we need to set all paramters to default.
         userModel = UserModel(
           name: userCredential.user!.displayName ?? 'No name',
           profilePicture:
@@ -62,8 +62,8 @@ class AuthRepository {
           awards: [],
         );
         await _users.doc(userModel.uid).set(userModel.toMap());
-      } else {
-        userModel = await getUserData(userCredential.user!.uid).first;
+      } else {//but if user is not a new user then we need to retrieve its data from firestore.
+        userModel = await getUserData(userCredential.user!.uid).first;//.first to make it a future or else it will be a stream.
       }
 
       return right(userModel); //if there is a success return userModel
@@ -74,6 +74,7 @@ class AuthRepository {
     }
   }
 
+  //to retrieve the data of user from firestore.
   Stream<UserModel> getUserData(String uid) {
     return _users.doc(uid).snapshots().map(
         (event) => UserModel.fromMap(event.data() as Map<String, dynamic>));
