@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:reddit_clone/components/loader.dart';
 import 'package:reddit_clone/components/signin_button.dart';
 import 'package:reddit_clone/core/constants/constants.dart';
+import 'package:reddit_clone/features/auth/controller/auth_controller.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends ConsumerWidget {
   const LoginScreen({super.key});
 
-
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isLoading = ref.read(authControllerProvider);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -19,7 +21,7 @@ class LoginScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () {},
-            child:  Text(
+            child: Text(
               "Skip ",
               style: TextStyle(
                 color: Theme.of(context).colorScheme.inversePrimary,
@@ -30,34 +32,36 @@ class LoginScreen extends StatelessWidget {
         ],
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Center(
-          child: Column(
-            children: [
-              const SizedBox(height: 30),
-                const Text(
-                  'Dive into anything',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 0.5,
-                  ),
+      body: isLoading
+          ? const Loader()
+          : Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Center(
+                child: Column(
+                  children: [
+                    const SizedBox(height: 30),
+                    const Text(
+                      'Dive into anything',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.asset(
+                        Constants.loginEmotePath,
+                        height: 400,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    const SignInButton(),
+                  ],
                 ),
-                const SizedBox(height: 30),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.asset(
-                    Constants.loginEmotePath,
-                    height: 400,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                const  SignInButton(),
-            ],
-          ),
-        ),
-      ),
+              ),
+            ),
     );
   }
 }

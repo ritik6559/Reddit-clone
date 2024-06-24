@@ -2,20 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddit_clone/components/snackbar.dart';
 import 'package:reddit_clone/features/auth/repository/auth_repository.dart';
+import 'package:reddit_clone/models/user_model.dart';
 
-final authControllerProvider = Provider(
-  (ref) => AuthController(authRepository: ref.read(authRepositoryProvider))
+final userProvider = StateProvider<UserModel?>((ref) => null);
+
+final authControllerProvider = StateNotifierProvider<AuthController,bool>(
+  (ref) => AuthController(
+    authRepository: ref.watch(authRepositoryProvider),
+    ref: ref,
+  ),
 );
 
-class AuthController {
+class AuthController extends StateNotifier<bool> {
   final AuthRepository _authRepository;
+  final Ref _ref;
 
   AuthController({
     required AuthRepository authRepository,
-  }) : _authRepository = authRepository;
+    required Ref ref,
+  })  : _authRepository = authRepository,
+        _ref = ref,
+        super(false); //loading
 
-  void signInWithGoogle(BuildContext context) async{
+  void signInWithGoogle(BuildContext context) async {
+    state = true;
     final user = await _authRepository.signInWithGoogle();
-    user.fold((l /*onFailure*/) => showSnackBar(context,l.message), (r/*onSuccess*/) => null);
+    state = false;
+    user.fold(
+      (l /*onFailure*/) => showSnackBar(context, l.message),
+      (userModel /*onSuccess*/) =>
+          _ref.read(userProvider.notifier).update((state) => userModel),
+    );
   }
 }
