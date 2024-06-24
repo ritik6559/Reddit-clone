@@ -1,8 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:reddit_clone/components/snackbar.dart';
 import 'package:reddit_clone/features/auth/repository/auth_repository.dart';
 
 final authControllerProvider = Provider(
-  (ref) => ref.read(authRepositoryProvider),
+  (ref) => AuthController(authRepository: ref.read(authRepositoryProvider))
 );
 
 class AuthController {
@@ -12,7 +14,8 @@ class AuthController {
     required AuthRepository authRepository,
   }) : _authRepository = authRepository;
 
-  void signInWithGoogle() {
-    _authRepository.signInWithGoogle();
+  void signInWithGoogle(BuildContext context) async{
+    final user = await _authRepository.signInWithGoogle();
+    user.fold((l /*onFailure*/) => showSnackBar(context,l.message), (r/*onSuccess*/) => null);
   }
 }

@@ -8,14 +8,14 @@ class SignInButton extends ConsumerWidget {
     super.key,
   });
 
-  void signInWithGoogle(WidgetRef ref) {
-    ref.read(authControllerProvider).signInWithGoogle();
+  void signInWithGoogle(BuildContext context, WidgetRef ref) {
+    ref.read(authControllerProvider).signInWithGoogle(context);
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
-      onTap: () => signInWithGoogle(ref),
+      onTap: () => signInWithGoogle(context, ref),
       child: Container(
         padding: const EdgeInsets.all(5),
         decoration: BoxDecoration(

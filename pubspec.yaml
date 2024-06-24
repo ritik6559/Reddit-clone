@@ -23,6 +23,7 @@ dependencies:
   firebase_storage: ^12.0.1
   google_sign_in: ^6.2.1
   flutter_riverpod: ^2.5.1
+  fpdart: ^1.1.0
   
 
 dev_dependencies:
