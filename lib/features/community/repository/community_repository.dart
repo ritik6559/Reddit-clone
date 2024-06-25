@@ -36,6 +36,7 @@ class CommunityRepository {
   //returning only those communities which the user is part of.
   Stream<List<Community>> getUserCommunities(String uid) {
     return _communities.where('members', arrayContains: uid).snapshots().map(
+      //.snapshot() is used to see the real time updates in the data.
       (event) {
         List<Community> communities = [];
         for (var doc in event.docs) {
@@ -45,5 +46,12 @@ class CommunityRepository {
         return communities;
       },
     );
+  }
+
+  Stream<Community> getCommunityByName(String name) {
+    return _communities
+        .doc(name)
+        .snapshots()
+        .map((event) => Community.fromMap(event.data() as Map<String,dynamic>));
   }
 }

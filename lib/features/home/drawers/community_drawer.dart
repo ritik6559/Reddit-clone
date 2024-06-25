@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddit_clone/components/error_txt.dart';
 import 'package:reddit_clone/components/loader.dart';
 import 'package:reddit_clone/features/community/controller/community_controller.dart';
+import 'package:reddit_clone/models/coummunity_model.dart';
 import 'package:routemaster/routemaster.dart';
 
 class CommunityListDrawer extends ConsumerWidget {
@@ -10,6 +11,10 @@ class CommunityListDrawer extends ConsumerWidget {
 
   void navigateToCreateCommunityScreen(BuildContext context) {
     Routemaster.of(context).push('/create-community');
+  }
+
+  void navigateToCommunity(BuildContext context, Community community) {
+    Routemaster.of(context).push('/r/${community.name}');
   }
 
   @override
@@ -25,7 +30,7 @@ class CommunityListDrawer extends ConsumerWidget {
             ),
             ref.watch(userCommunitiesProvider).when(
                 data: (communities) => Expanded(
-                  child: ListView.builder(
+                      child: ListView.builder(
                         itemCount: communities.length,
                         itemBuilder: (context, index) {
                           final community = communities[index];
@@ -34,11 +39,13 @@ class CommunityListDrawer extends ConsumerWidget {
                             leading: CircleAvatar(
                               backgroundImage: NetworkImage(community.avatar),
                             ),
-                            onTap: (){},
+                            onTap: () {
+                              navigateToCommunity(context, community);
+                            },
                           );
                         },
                       ),
-                ),
+                    ),
                 error: (error, stackTrace) {
                   return ErrorText(error: error.toString());
                 },
