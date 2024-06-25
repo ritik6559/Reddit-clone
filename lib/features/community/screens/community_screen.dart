@@ -20,10 +20,16 @@ class CommunityScreen extends ConsumerWidget {
                     snap: true,
                     flexibleSpace: Stack(
                       children: [
-                        Positioned.fill(child: Image.network(community.banner,fit: BoxFit.cover,))
+                        Positioned.fill(
+                          child: Image.network(
+                            community.banner,
+                            fit: BoxFit.cover,
+                          ),
+                        )
                       ],
                     ),
-                ),];
+                  ),
+                ];
               },
               body: Container()),
           error: (error, stackTrace) {
