@@ -19,7 +19,6 @@ final authStateChangeProvider = StreamProvider((ref) {
   return authController.authStateChange;//provides authstate instance whether user is signed in or not.
 });
 
-
 //it also helps in getting other user data like when we visit someone else profile and getting other user's name etc.
 final getUserDataProvider = StreamProvider.family((ref,String uid ){
   final authController = ref.watch(authControllerProvider.notifier);
