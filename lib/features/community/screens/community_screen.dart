@@ -71,9 +71,17 @@ class CommunityScreen extends ConsumerWidget {
                                               BorderRadius.circular(20),
                                         ),
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 25),
+                                          horizontal: 25,
+                                        ),
                                       ),
-                                      child: const Text("Mod Tools"),
+                                      child: Text(
+                                        "Mod Tools",
+                                        style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .inversePrimary,
+                                        ),
+                                      ),
                                     )
                                   : OutlinedButton(
                                       onPressed: () {},
@@ -86,9 +94,15 @@ class CommunityScreen extends ConsumerWidget {
                                             horizontal: 25),
                                       ),
                                       child: Text(
-                                          community.members.contains(user.uid)
-                                              ? "Joined"
-                                              : "Join"),
+                                        community.members.contains(user.uid)
+                                            ? "Joined"
+                                            : "Join",
+                                        style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .inversePrimary,
+                                        ),
+                                      ),
                                     ),
                             ],
                           ),

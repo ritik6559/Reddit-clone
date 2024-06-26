@@ -6,7 +6,7 @@ class ModToolsScreen extends StatelessWidget {
   const ModToolsScreen({super.key, required this.name});
 
   void navigateToEditCommunityScreen(BuildContext context) {
-    Routemaster.of(context).push('/edit-community/:$name');
+    Routemaster.of(context).push('/edit-community/$name');
   }
 
   @override

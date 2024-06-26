@@ -6,7 +6,7 @@ class Community {
   final String avatar;
   final String banner;
   final List<String> members;//it contains the uid of all the member of a given community.
-  final List<String> mods;
+  final List<String> mods; //it contains the uid of all the moderators of a given community.
   Community({
     required this.name,
     required this.id,
