@@ -76,7 +76,7 @@ class CommunityController extends StateNotifier<bool> {
       required File? bannerFile,
       required BuildContext context,
       required Community community}) async {
-    state = true;
+    state = true;//state = true is simply to know if we are in loading state or not.
     if (profileFile != null) {
       //it will be stored as communities/profile/file_name.
       //if we change the profile another time it will be overrided.
