@@ -11,7 +11,7 @@ class CommunityScreen extends ConsumerWidget {
   const CommunityScreen({required this.name, super.key});
 
   void navigateToModScreen(BuildContext context) {
-    Routemaster.of(context).push('/mod-tools');
+    Routemaster.of(context).push('/mod-tools/$name');
   }
 
   @override
