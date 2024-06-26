@@ -4,10 +4,15 @@ import 'package:reddit_clone/components/error_txt.dart';
 import 'package:reddit_clone/components/loader.dart';
 import 'package:reddit_clone/features/auth/controller/auth_controller.dart';
 import 'package:reddit_clone/features/community/controller/community_controller.dart';
+import 'package:routemaster/routemaster.dart';
 
 class CommunityScreen extends ConsumerWidget {
   final String name;
   const CommunityScreen({required this.name, super.key});
+
+  void navigateToModScreen(BuildContext context) {
+    Routemaster.of(context).push('/mod-tools');
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -55,28 +60,36 @@ class CommunityScreen extends ConsumerWidget {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              community.mods.contains(user.uid) ? 
-                              OutlinedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 25),
-                                ),
-                                child: const Text("Mod Tools"),
-                              ) : OutlinedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 25),
-                                ),
-                                child:  Text(community.members.contains(user.uid) ?  "Joined" : "Join"),
-                              ),
+                              community.mods.contains(user.uid)
+                                  ? OutlinedButton(
+                                      onPressed: () {
+                                        navigateToModScreen(context);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 25),
+                                      ),
+                                      child: const Text("Mod Tools"),
+                                    )
+                                  : OutlinedButton(
+                                      onPressed: () {},
+                                      style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 25),
+                                      ),
+                                      child: Text(
+                                          community.members.contains(user.uid)
+                                              ? "Joined"
+                                              : "Join"),
+                                    ),
                             ],
                           ),
                           Padding(
