@@ -76,7 +76,8 @@ class CommunityController extends StateNotifier<bool> {
       required File? bannerFile,
       required BuildContext context,
       required Community community}) async {
-    state = true;//state = true is simply to know if we are in loading state or not.
+    state =
+        true; //state = true is simply to know if we are in loading state or not.
     if (profileFile != null) {
       //it will be stored as communities/profile/file_name.
       //if we change the profile another time it will be overrided.
@@ -89,8 +90,8 @@ class CommunityController extends StateNotifier<bool> {
       res.fold(
           (l) => showSnackBar(context, l.message),
           (r) => community = community.copyWith(
-              avatar:
-                  r) //we cannot do community.avatar = r becuase avatar is final therefore we can't change its value.
+                avatar: r,
+              ) //we cannot do community.avatar = r becuase avatar is final therefore we can't change its value.
           );
     }
     if (bannerFile != null) {
@@ -105,8 +106,8 @@ class CommunityController extends StateNotifier<bool> {
       res.fold(
           (l) => showSnackBar(context, l.message),
           (r) => community = community.copyWith(
-              banner:
-                  r) //we cannot do community.avatar = r becuase avatar is final therefore we can't change its value.
+                banner: r,
+              ) //we cannot do community.avatar = r becuase avatar is final therefore we can't change its value.
           );
     }
     final res = await _communityRepository.editCommunity(community);
