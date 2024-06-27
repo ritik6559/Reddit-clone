@@ -26,9 +26,7 @@ class _ProfileDrawerState extends ConsumerState<ProfileDrawer> {
               backgroundImage: NetworkImage(user.profilePicture),
               radius: 70,
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             Text(
               "u/${user.name},",
               style: const TextStyle(
@@ -36,9 +34,7 @@ class _ProfileDrawerState extends ConsumerState<ProfileDrawer> {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             const Divider(),
             ListTile(
               title: const Text("My Profile"),
