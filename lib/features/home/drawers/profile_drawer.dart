@@ -50,7 +50,12 @@ class _ProfileDrawerState extends ConsumerState<ProfileDrawer> {
               onTap: () => logout(ref),
             ),
             ListTile(
-              leading: const Text("Dark Mode"),
+              leading: const Text(
+                "Dark Mode",
+                style: TextStyle(
+                  fontSize: 14,
+                ),
+              ),
               title: Switch.adaptive(
                 value: true,
                 onChanged: (value) {},

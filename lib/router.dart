@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:reddit_clone/features/auth/screen/login_screen.dart';
+import 'package:reddit_clone/features/community/screens/add_moderators.dart';
 import 'package:reddit_clone/features/community/screens/community_screen.dart';
 import 'package:reddit_clone/features/community/screens/create_community_screen.dart';
 import 'package:reddit_clone/features/community/screens/edit_community_screen.dart';
@@ -40,4 +41,10 @@ final loggedInRoute = RouteMap(routes: {
           name: routeData.pathParameters['name']!,
         ),
       ),
+
+  '/add-mods/:name': (routeData) => MaterialPage(
+        child: AddModeratorsScreen(
+          name: routeData.pathParameters['name']!,
+        ),
+      )
 });
