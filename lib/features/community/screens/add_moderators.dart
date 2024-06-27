@@ -19,6 +19,7 @@ class AddModeratorsScreen extends ConsumerStatefulWidget {
 
 class _AddModeratorsScreenState extends ConsumerState<AddModeratorsScreen> {
   Set<String> uids = {};
+  int ctr = 0;
 
   void addUid(String uid) {
     setState(() {
@@ -32,13 +33,19 @@ class _AddModeratorsScreenState extends ConsumerState<AddModeratorsScreen> {
     });
   }
 
+  void saveMods() {
+    ref
+        .read(communityControllerProvider.notifier)
+        .addMods(widget.name, uids.toList(), context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: saveMods,
             icon: const Icon(
               Icons.done,
             ),
@@ -53,9 +60,11 @@ class _AddModeratorsScreenState extends ConsumerState<AddModeratorsScreen> {
 
                 return ref.watch(getUserDataProvider(member)).when(
                       data: (user) {
-                        if (community.mods.contains(member)) {
+                        if (community.mods.contains(member) && ctr == 0) {
+                          //ctr == 0 signifies initial condition when the moderator will be added to the uids set.
                           uids.add(member);
                         }
+                        ctr++;
                         return CheckboxListTile(
                           activeColor:
                               Theme.of(context).colorScheme.inversePrimary,
