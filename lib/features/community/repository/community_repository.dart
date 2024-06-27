@@ -68,10 +68,12 @@ class CommunityRepository {
         .where(
           'name',
           isGreaterThanOrEqualTo: query.isEmpty ? 0 : query,
-          isLessThan: query.isEmpty ? null : query.substring(0, query.length - 1) +
-              String.fromCharCode(
-                query.codeUnitAt(query.length - 1) - 1,
-              ),
+          isLessThan: query.isEmpty
+              ? null
+              : query.substring(0, query.length - 1) +
+                  String.fromCharCode(
+                    query.codeUnitAt(query.length - 1) + 1,
+                  ),
         )
         .snapshots()
         .map((event) {
