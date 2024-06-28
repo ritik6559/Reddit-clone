@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+final themeNotifierProvider =
+    StateNotifierProvider<ThemeNotifier, ThemeData>((ref) {
+  return ThemeNotifier();
+});
+
 class Pallete {
   // Colors
   static const blackColor = Color.fromRGBO(1, 1, 1, 1); // primary color
@@ -61,7 +66,13 @@ class ThemeNotifier extends StateNotifier<ThemeData> {
       : _mode = mode,
         super(
           Pallete.darkModeAppTheme,
-        );
+        ) {
+    getTheme(); //it checks what is the actual initial theme.
+  }
+
+    ThemeMode get mode => _mode;
+
+
   void getTheme() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final theme = prefs.getString('theme');
@@ -75,5 +86,16 @@ class ThemeNotifier extends StateNotifier<ThemeData> {
     }
   }
 
-  void toogleTheme() async {}
+  void toogleTheme() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (_mode == ThemeMode.dark) {
+      _mode = ThemeMode.light;
+      state = ThemeData.light();
+      prefs.setString('theme', 'light');
+    } else {
+      _mode = ThemeMode.dark;
+      state = ThemeData.dark();
+      prefs.setString('theme', 'dark');
+    }
+  }
 }
