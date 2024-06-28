@@ -70,8 +70,7 @@ class ThemeNotifier extends StateNotifier<ThemeData> {
     getTheme(); //it checks what is the actual initial theme.
   }
 
-    ThemeMode get mode => _mode;
-
+  ThemeMode get mode => _mode;
 
   void getTheme() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
