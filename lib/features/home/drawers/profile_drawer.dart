@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddit_clone/features/auth/controller/auth_controller.dart';
 import 'package:reddit_clone/theme/pallete.dart';
+import 'package:routemaster/routemaster.dart';
 
 class ProfileDrawer extends ConsumerStatefulWidget {
   const ProfileDrawer({super.key});
@@ -10,11 +11,15 @@ class ProfileDrawer extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _ProfileDrawerState();
 }
 
-void logout(WidgetRef ref) {
-  ref.read(authControllerProvider.notifier).logout();
-}
-
 class _ProfileDrawerState extends ConsumerState<ProfileDrawer> {
+  void logout(WidgetRef ref) {
+    ref.read(authControllerProvider.notifier).logout();
+  }
+
+  void navigateToUserProfile(BuildContext context,String uid) {
+    Routemaster.of(context).push('/u/$uid');
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(userProvider)!;
@@ -39,7 +44,7 @@ class _ProfileDrawerState extends ConsumerState<ProfileDrawer> {
             ListTile(
               title: const Text("My Profile"),
               leading: const Icon(Icons.person),
-              onTap: () {},
+              onTap: () => navigateToUserProfile(context,user.uid),
             ),
             ListTile(
               title: const Text("Log Out"),
