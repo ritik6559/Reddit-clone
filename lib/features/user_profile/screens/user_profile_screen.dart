@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddit_clone/components/error_txt.dart';
 import 'package:reddit_clone/components/loader.dart';
 import 'package:reddit_clone/features/auth/controller/auth_controller.dart';
+import 'package:routemaster/routemaster.dart';
 
 class UserProfileScreen extends ConsumerWidget {
   final String uid;
@@ -10,6 +11,10 @@ class UserProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    void navigateToEditProfileScreen(BuildContext context) {
+      Routemaster.of(context).push('/edit-profile/$uid');
+    }
+
     return Scaffold(
       body: ref.watch(getUserDataProvider(uid)).when(
           data: (user) => NestedScrollView(
@@ -41,7 +46,7 @@ class UserProfileScreen extends ConsumerWidget {
                           padding:
                               const EdgeInsets.all(20).copyWith(bottom: 70),
                           child: OutlinedButton(
-                            onPressed: () {},
+                            onPressed: () => navigateToEditProfileScreen(context),
                             style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
