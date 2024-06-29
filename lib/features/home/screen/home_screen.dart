@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:reddit_clone/core/constants/constants.dart';
 import 'package:reddit_clone/features/auth/controller/auth_controller.dart';
 import 'package:reddit_clone/features/home/delegate/search_community_delegate.dart';
 import 'package:reddit_clone/features/home/drawers/community_drawer.dart';
@@ -13,6 +15,8 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  int _page = 0;
+
   void displayDrawer(BuildContext context) {
     Scaffold.of(context).openDrawer();
   }
@@ -21,18 +25,26 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     Scaffold.of(context).openEndDrawer();
   }
 
+  void onPageChanged(int page) {
+    setState(() {
+      _page = page;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(userProvider)!;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Home"),
-        leading: Builder(builder: (context) {
-          return IconButton(
-            onPressed: () => displayDrawer(context),
-            icon: const Icon(Icons.menu),
-          );
-        }),
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              onPressed: () => displayDrawer(context),
+              icon: const Icon(Icons.menu),
+            );
+          },
+        ),
         actions: [
           IconButton(
             onPressed: () {
@@ -56,11 +68,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       ),
       drawer: const CommunityListDrawer(),
       endDrawer: const ProfileDrawer(),
-      body: Center(
-        child: Text(user.name),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
+      body: Constants.tabWidgets[_page],
+      bottomNavigationBar: CupertinoTabBar(
+        activeColor: Theme.of(context).colorScheme.inversePrimary,
         backgroundColor: Theme.of(context).colorScheme.primary,
+        onTap:
+          onPageChanged
+        ,
+        currentIndex: _page,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
           BottomNavigationBarItem(icon: Icon(Icons.add), label: ""),
