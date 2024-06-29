@@ -44,7 +44,7 @@ class UserProfileScreen extends ConsumerWidget {
                         Container(
                           alignment: Alignment.bottomLeft,
                           padding:
-                              const EdgeInsets.all(20).copyWith(bottom: 70),
+                              const EdgeInsets.all(20).copyWith(bottom: 10),
                           child: OutlinedButton(
                             onPressed: () => navigateToEditProfileScreen(context),
                             style: ElevatedButton.styleFrom(

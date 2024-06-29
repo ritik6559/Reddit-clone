@@ -49,7 +49,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   }
 
   void saveChanges(
-      File? profileFile, File? bannerFile, BuildContext context, String name) {
+      File? profileFile, File? bannerFile, BuildContext context) {
     ref.read(userProfileControllerProvider.notifier).editProfile(
         profileFile: profileFile,
         bannerFile: bannerFile,
@@ -76,7 +76,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
               title: const Text("Edit Profile"),
               actions: [
                 TextButton(
-                  onPressed: () => saveChanges,
+                  onPressed: () => saveChanges(profileFile,bannerFile,context),
                   child: Text(
                     "Save",
                     style: TextStyle(

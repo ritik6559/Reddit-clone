@@ -5,9 +5,14 @@ import 'package:reddit_clone/features/home/delegate/search_community_delegate.da
 import 'package:reddit_clone/features/home/drawers/community_drawer.dart';
 import 'package:reddit_clone/features/home/drawers/profile_drawer.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   void displayDrawer(BuildContext context) {
     Scaffold.of(context).openDrawer();
   }
@@ -17,7 +22,7 @@ class HomeScreen extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final user = ref.watch(userProvider)!;
     return Scaffold(
       appBar: AppBar(
@@ -45,7 +50,7 @@ class HomeScreen extends ConsumerWidget {
                   backgroundImage: NetworkImage(user.profilePicture),
                 ),
               );
-            }
+            },
           )
         ],
       ),
@@ -53,6 +58,13 @@ class HomeScreen extends ConsumerWidget {
       endDrawer: const ProfileDrawer(),
       body: Center(
         child: Text(user.name),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: ""),
+          BottomNavigationBarItem(icon: Icon(Icons.add), label: ""),
+        ],
       ),
     );
   }
