@@ -11,6 +11,12 @@ import 'package:reddit_clone/models/post_model.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:uuid/uuid.dart';
 
+final userPostsProvider =
+    StreamProvider.family((ref, List<Community> communities) {
+  final postController = ref.watch(postControllerProvider.notifier);
+  return postController.fetchUserPosts(communities);
+});
+
 final postControllerProvider =
     StateNotifierProvider<PostController, bool>((ref) {
   return PostController(
@@ -121,34 +127,44 @@ class PostController extends StateNotifier<bool> {
     final imageRes = await _storageRepository.storeFile(
         path: 'posts/${selectedCommunity.name}', id: postId, file: file);
 
-    imageRes.fold((l) => showSnackBar(context, l.message), (r) async{//we will proceed only if we can upload the image.
-      final Post post = Post(
-      id: postId,
-      title: title,
-      communityName: selectedCommunity.name,
-      communityProfilePic: selectedCommunity.avatar,
-      upvotes: [],
-      downvotes: [],
-      commentCount: 0,
-      username: user.name,
-      uid: user.uid,
-      type: 'text',
-      createdAt: DateTime.now(),
-      awards: [],
-      link: r,
-    );
-
-    final res = await _postRepository.addPosts(post);
-    state = false;
-
-    res.fold(
+    imageRes.fold(
       (l) => showSnackBar(context, l.message),
-      (r) {
-        showSnackBar(context, "Posted succcessfully!");
-        Routemaster.of(context).pop();
+      (r) async {
+        //we will proceed only if we can upload the image.
+        final Post post = Post(
+          id: postId,
+          title: title,
+          communityName: selectedCommunity.name,
+          communityProfilePic: selectedCommunity.avatar,
+          upvotes: [],
+          downvotes: [],
+          commentCount: 0,
+          username: user.name,
+          uid: user.uid,
+          type: 'text',
+          createdAt: DateTime.now(),
+          awards: [],
+          link: r,
+        );
+
+        final res = await _postRepository.addPosts(post);
+        state = false;
+
+        res.fold(
+          (l) => showSnackBar(context, l.message),
+          (r) {
+            showSnackBar(context, "Posted succcessfully!");
+            Routemaster.of(context).pop();
+          },
+        );
       },
     );
-    });
-    
+  }
+
+  Stream<List<Post>> fetchUserPosts(List<Community> communities) {
+    if (communities.isNotEmpty) {
+      return _postRepository.fetchUserPosts(communities);
+    }
+    return Stream.value([]);
   }
 }
