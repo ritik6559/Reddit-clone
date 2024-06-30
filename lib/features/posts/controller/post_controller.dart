@@ -115,7 +115,7 @@ class PostController extends StateNotifier<bool> {
     );
   }
 
-  void sharedFilePost({
+  void sharedImagePost({
     required BuildContext context,
     required String title,
     required Community selectedCommunity,
@@ -141,7 +141,7 @@ class PostController extends StateNotifier<bool> {
           commentCount: 0,
           username: user.name,
           uid: user.uid,
-          type: 'text',
+          type: 'image',
           createdAt: DateTime.now(),
           awards: [],
           link: r,

@@ -52,7 +52,7 @@ class _AddPostTypeScreenState extends ConsumerState<AddPostTypeScreen> {
     if (widget.type == 'image' &&
         bannerFile != null &&
         titleController.text.isNotEmpty) {
-      ref.read(postControllerProvider.notifier).sharedFilePost(
+      ref.read(postControllerProvider.notifier).sharedImagePost(
             context: context,
             title: titleController.text,
             selectedCommunity: selectedCommuntiy ?? communities[0],
