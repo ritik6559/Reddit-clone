@@ -138,7 +138,7 @@ class _AddPostTypeScreenState extends ConsumerState<AddPostTypeScreen> {
                         ),
                       ),
                     ),
-                  if (isTypeText)
+                  if(isTypeText)
                     TextField(
                       controller: descriptionController,
                       decoration: const InputDecoration(
@@ -149,7 +149,7 @@ class _AddPostTypeScreenState extends ConsumerState<AddPostTypeScreen> {
                       ),
                       maxLines: 5,
                     ),
-                  if (isTypeLink)
+                  if(isTypeLink)
                     TextField(
                       controller: linkController,
                       decoration: const InputDecoration(

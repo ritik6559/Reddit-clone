@@ -9,8 +9,7 @@ import 'package:reddit_clone/models/coummunity_model.dart';
 import 'package:reddit_clone/models/post_model.dart';
 
 final postRepositoryProvider = Provider((ref) {
-  final firestore = ref.watch(firestoreProvider);
-  return PostRepository(firestore: firestore);
+  return PostRepository(firestore: ref.watch(firestoreProvider));
 });
 
 class PostRepository {
