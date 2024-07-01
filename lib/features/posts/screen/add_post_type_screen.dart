@@ -91,7 +91,8 @@ class _AddPostTypeScreenState extends ConsumerState<AddPostTypeScreen> {
         actions: [
           TextButton(
             onPressed: () => sharePosts,
-            child: const Text("Share"),
+            child:  Text("Share",
+            style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),),
           ),
         ],
       ),

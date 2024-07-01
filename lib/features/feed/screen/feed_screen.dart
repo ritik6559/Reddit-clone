@@ -27,8 +27,10 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                     },
                   );
                 },
-                error: (error, stackTrace) =>
-                    ErrorText(error: error.toString()),
+                error: (error, stackTrace) {
+                    print(error.toString());
+                    return ErrorText(error: error.toString());
+                },
                 loading: () => const Loader(),
               ),
           error: (error, stackTrace) => ErrorText(error: error.toString()),
