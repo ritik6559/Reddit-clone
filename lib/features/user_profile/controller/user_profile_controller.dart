@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddit_clone/components/snackbar.dart';
+import 'package:reddit_clone/core/enum/enums.dart';
 import 'package:reddit_clone/core/providers/storage_repository.dart';
 import 'package:reddit_clone/features/auth/controller/auth_controller.dart';
 import 'package:reddit_clone/features/user_profile/repository/user_profile_repoitory.dart';
@@ -21,10 +22,10 @@ final userProfileControllerProvider =
       storageRepository: storageRepository);
 });
 
-
-final getUserPostsProvider = StreamProvider.family((ref,String uid) {
+final getUserPostsProvider = StreamProvider.family((ref, String uid) {
   return ref.read(userProfileControllerProvider.notifier).getPosts(uid);
 });
+
 class UserProfileController extends StateNotifier<bool> {
   final UserProfileRepoitory _userProfileRepoitory;
   final Ref _ref;
@@ -83,5 +84,17 @@ class UserProfileController extends StateNotifier<bool> {
 
   Stream<List<Post>> getPosts(String uid) {
     return _userProfileRepoitory.getPosts(uid);
+  }
+
+  void updateUserKarma(UserKarma karma) async {
+    UserModel user = _ref.read(userProvider)!;
+    user = user.copyWith(karma: user.karma + karma.karma);
+
+    final res = await _userProfileRepoitory.updatUseKarma(user);
+
+    res.fold(
+      (l) => null,
+      (r) => _ref.read(userProvider.notifier).update((state) => user),
+    );
   }
 }
