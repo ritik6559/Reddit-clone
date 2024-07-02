@@ -34,11 +34,14 @@ class PostCard extends ConsumerWidget {
   void navigateToUser(BuildContext context) {
     Routemaster.of(context).push('/u/${post.uid}');
   }
-  
+
   void navigateToCommunity(BuildContext context) {
     Routemaster.of(context).push('/r/${post.communityName}');
   }
 
+  void navigateToCommentsScreen(BuildContext context) {
+    Routemaster.of(context).push('/post/${post.id}/comments');
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -76,8 +79,8 @@ class PostCard extends ConsumerWidget {
                                   GestureDetector(
                                     onTap: () => navigateToCommunity(context),
                                     child: CircleAvatar(
-                                      backgroundImage:
-                                          NetworkImage(post.communityProfilePic),
+                                      backgroundImage: NetworkImage(
+                                          post.communityProfilePic),
                                       radius: 16,
                                     ),
                                   ),
@@ -194,7 +197,8 @@ class PostCard extends ConsumerWidget {
                               Row(
                                 children: [
                                   IconButton(
-                                    onPressed: () {},
+                                    onPressed: () =>
+                                        navigateToCommentsScreen(context),
                                     icon: const Icon(
                                       Icons.comment,
                                     ),
@@ -213,7 +217,8 @@ class PostCard extends ConsumerWidget {
                                     data: (data) {
                                       if (data.mods.contains(user.uid)) {
                                         return IconButton(
-                                          onPressed: () => deletePost(ref,context),
+                                          onPressed: () =>
+                                              deletePost(ref, context),
                                           icon: const Icon(
                                             Icons.admin_panel_settings,
                                           ),
@@ -224,7 +229,7 @@ class PostCard extends ConsumerWidget {
                                     error: (error, stackTrace) =>
                                         ErrorText(error: error.toString()),
                                     loading: () => const Loader(),
-                                  )
+                                  ),
                             ],
                           ),
                         ],
@@ -236,6 +241,7 @@ class PostCard extends ConsumerWidget {
             ],
           ),
         ),
+       const SizedBox(height: 10)
       ],
     );
   }
