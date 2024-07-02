@@ -19,6 +19,14 @@ class PostCard extends ConsumerWidget {
     ref.read(postControllerProvider.notifier).deletPost(post, context);
   }
 
+  void upVotePost(WidgetRef ref) async {
+    ref.read(postControllerProvider.notifier).upvote(post);
+  }
+
+  void downVotePost(WidgetRef ref) async {
+    ref.read(postControllerProvider.notifier).downvote(post);
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isTypeImage = post.type == 'image';
@@ -31,7 +39,7 @@ class PostCard extends ConsumerWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary,
+            color: Theme.of(context).scaffoldBackgroundColor,
           ),
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: Row(
@@ -137,7 +145,7 @@ class PostCard extends ConsumerWidget {
                               Row(
                                 children: [
                                   IconButton(
-                                    onPressed: () {},
+                                    onPressed: () => upVotePost(ref),
                                     icon: Icon(
                                       Constants.up,
                                       size: 30,
@@ -149,15 +157,16 @@ class PostCard extends ConsumerWidget {
                                   Text(
                                     '${post.upvotes.length - post.downvotes.length == 0 ? 'Vote' : post.upvotes.length - post.downvotes.length}',
                                     style: const TextStyle(
-                                      fontSize: 17,
+                                      fontSize: 14,
+                                      color: Colors.grey
                                     ),
                                   ),
                                   IconButton(
-                                    onPressed: () {},
+                                    onPressed: () => downVotePost(ref),
                                     icon: Icon(
                                       Constants.down,
                                       size: 30,
-                                      color: post.upvotes.contains(user.uid)
+                                      color: post.downvotes.contains(user.uid)
                                           ? Pallete.blueColor
                                           : null,
                                     ),
@@ -175,7 +184,8 @@ class PostCard extends ConsumerWidget {
                                   Text(
                                     '${post.commentCount == 0 ? 'Comment' : post.commentCount}',
                                     style: const TextStyle(
-                                      fontSize: 17,
+                                      fontSize: 14,
+                                      color: Colors.grey
                                     ),
                                   ),
                                 ],

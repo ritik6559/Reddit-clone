@@ -71,7 +71,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       body: Constants.tabWidgets[_page],
       bottomNavigationBar: CupertinoTabBar(
         activeColor: Theme.of(context).colorScheme.inversePrimary,
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        
         onTap:
           onPageChanged
         ,
