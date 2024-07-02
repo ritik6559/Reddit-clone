@@ -17,6 +17,11 @@ final userPostsProvider =
   return postController.fetchUserPosts(communities);
 });
 
+
+final getPostByIdProvider = StreamProvider.family((ref,String uid)  {
+  return ref.watch(postControllerProvider.notifier).getPostById(uid);
+});
+
 final postControllerProvider =
     StateNotifierProvider<PostController, bool>((ref) {
   return PostController(
@@ -180,9 +185,12 @@ class PostController extends StateNotifier<bool> {
     _postRepository.upvote(post, user.uid);
   }
 
-
   void downvote(Post post) async {
     final user = _ref.read(userProvider)!;
     _postRepository.downvote(post, user.uid);
+  }
+
+  Stream<Post> getPostById(String uid) {
+    return _postRepository.getPostById(uid);
   }
 }

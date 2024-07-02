@@ -78,7 +78,6 @@ class PostRepository {
     }
   }
 
-
   void downvote(Post post, String userId) async {
     if (post.upvotes.contains(userId)) {
       _posts.doc(post.id).update({
@@ -95,5 +94,13 @@ class PostRepository {
         'downvotes': FieldValue.arrayUnion([userId])
       });
     }
+  }
+
+  Stream<Post> getPostById(String uid) {
+    return _posts.doc(uid).snapshots().map(
+          (event) => Post.fromMap(
+            event.data() as Map<String, dynamic>,
+          ),
+        );
   }
 }
