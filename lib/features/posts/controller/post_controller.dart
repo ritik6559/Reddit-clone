@@ -39,7 +39,7 @@ class PostController extends StateNotifier<bool> {
         _storageRepository = storageRepository,
         super(false);
 
-  void sharedTextPost({
+  void shareTextPost({
     required BuildContext context,
     required String title,
     required Community selectedCommunity,
@@ -77,7 +77,7 @@ class PostController extends StateNotifier<bool> {
     );
   }
 
-  void sharedLinkPost({
+  void shareLinkPost({
     required BuildContext context,
     required String title,
     required Community selectedCommunity,
@@ -115,7 +115,7 @@ class PostController extends StateNotifier<bool> {
     );
   }
 
-  void sharedImagePost({
+  void shareImagePost({
     required BuildContext context,
     required String title,
     required Community selectedCommunity,

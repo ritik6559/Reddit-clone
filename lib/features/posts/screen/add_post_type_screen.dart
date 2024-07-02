@@ -48,25 +48,25 @@ class _AddPostTypeScreenState extends ConsumerState<AddPostTypeScreen> {
     }
   }
 
-  void sharePosts() {
+  void sharePosts(BuildContext context) {
     if (widget.type == 'image' &&
         bannerFile != null &&
         titleController.text.isNotEmpty) {
-      ref.read(postControllerProvider.notifier).sharedImagePost(
+      ref.read(postControllerProvider.notifier).shareImagePost(
             context: context,
             title: titleController.text,
             selectedCommunity: selectedCommuntiy ?? communities[0],
             file: bannerFile,
           );
     } else if (widget.type == 'text' && titleController.text.isNotEmpty) {
-      ref.read(postControllerProvider.notifier).sharedTextPost(
+      ref.read(postControllerProvider.notifier).shareTextPost(
             context: context,
             title: titleController.text,
             selectedCommunity: selectedCommuntiy ?? communities[0],
             description: descriptionController.text.trim(),
           );
     } else if (widget.type == 'link' && titleController.text.isNotEmpty) {
-      ref.read(postControllerProvider.notifier).sharedLinkPost(
+      ref.read(postControllerProvider.notifier).shareLinkPost(
             context: context,
             title: titleController.text,
             selectedCommunity: selectedCommuntiy ?? communities[0],
@@ -90,7 +90,7 @@ class _AddPostTypeScreenState extends ConsumerState<AddPostTypeScreen> {
         centerTitle: true,
         actions: [
           TextButton(
-            onPressed: () => sharePosts,
+            onPressed: () => sharePosts(context),
             child:  Text("Share",
             style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),),
           ),

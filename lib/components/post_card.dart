@@ -71,7 +71,7 @@ class PostCard extends ConsumerWidget {
                                           ),
                                         ),
                                         Text(
-                                          'r/${post..username}',
+                                          'r/${post.username}',
                                           style: const TextStyle(
                                             fontSize: 12,
                                           ),

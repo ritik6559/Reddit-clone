@@ -6,7 +6,7 @@ class AddPostScreen extends ConsumerWidget {
   const AddPostScreen({super.key});
 
   void navigateToAddPostType(BuildContext context, String type) {
-    Routemaster.of(context).push('add-post/$type');
+    Routemaster.of(context).push('/add-post/$type');
   }
 
   @override

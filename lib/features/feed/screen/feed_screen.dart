@@ -17,7 +17,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
   @override
   Widget build(BuildContext context) {
     return ref.watch(userCommunitiesProvider).when(
-          data: (data) => ref.watch(userPostsProvider(data)).when(
+          data: (communities) => ref.watch(userPostsProvider(communities)).when(
                 data: (data) {
                   return ListView.builder(
                     itemCount: data.length,
@@ -28,7 +28,6 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                   );
                 },
                 error: (error, stackTrace) {
-                    print(error.toString());
                     return ErrorText(error: error.toString());
                 },
                 loading: () => const Loader(),
