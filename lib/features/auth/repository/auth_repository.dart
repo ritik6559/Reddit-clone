@@ -37,7 +37,7 @@ class AuthRepository {
   Stream<User?> get authStateChange => _auth
       .authStateChanges(); //it is used when we need to check whether user is signed in or not.
 
-  FutureEither<UserModel> signInWithGoogle() async {
+  FutureEither<UserModel> signInWithGoogle(bool isFromLogin) async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
@@ -46,8 +46,14 @@ class AuthRepository {
       final credential = GoogleAuthProvider.credential(
           accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
 
-      UserCredential userCredential = await _auth.signInWithCredential(
-          credential); //all of this is standard code to get all the google accounts available on the device and to select an account to sign in the user.
+      UserCredential userCredential;
+      if (isFromLogin) {
+        userCredential = await _auth.signInWithCredential(credential);
+      } else {//whne a user is a guest user and login from the community drawer then we want to change the user from anonymous to signed in user.
+        userCredential = await _auth.currentUser!.linkWithCredential(credential);
+      }
+
+      //all of this is standard code to get all the google accounts available on the device and to select an account to sign in the user.
 
       UserModel userModel;
 
@@ -92,17 +98,15 @@ class AuthRepository {
       var userCredential = await _auth.signInAnonymously();
 
       UserModel userModel = UserModel(
-          name: 'Guest',
-          profilePicture:
-              Constants.avatarDefault,
-          banner: Constants.bannerDefault,
-          uid: userCredential.user!.uid,
-          isAuthenticated: false,
-          karma: 0,
-          awards: [],
-        );
-        await _users.doc(userModel.uid).set(userModel.toMap());
-      
+        name: 'Guest',
+        profilePicture: Constants.avatarDefault,
+        banner: Constants.bannerDefault,
+        uid: userCredential.user!.uid,
+        isAuthenticated: false,
+        karma: 0,
+        awards: [],
+      );
+      await _users.doc(userModel.uid).set(userModel.toMap());
 
       return right(userModel); //if there is a success return userModel
     } on FirebaseException catch (e) {

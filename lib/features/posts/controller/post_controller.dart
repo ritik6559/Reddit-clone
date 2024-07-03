@@ -21,6 +21,12 @@ final userPostsProvider =
   return postController.fetchUserPosts(communities);
 });
 
+final guestPostsProvider =
+    StreamProvider((ref ) {
+  final postController = ref.watch(postControllerProvider.notifier);
+  return postController.fetchGuestPosts();
+});
+
 final getPostByIdProvider = StreamProvider.family((ref, String uid) {
   return ref.watch(postControllerProvider.notifier).getPostById(uid);
 });
@@ -265,5 +271,12 @@ class PostController extends StateNotifier<bool> {
       },
       
     );
+  }
+
+
+  Stream<List<Post>> fetchGuestPosts() {
+ 
+      return _postRepository.fetchGuestPosts();
+
   }
 }
