@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddit_clone/components/error_txt.dart';
@@ -9,6 +10,7 @@ import 'package:reddit_clone/components/snackbar.dart';
 import 'package:reddit_clone/features/community/controller/community_controller.dart';
 import 'package:reddit_clone/features/posts/controller/post_controller.dart';
 import 'package:reddit_clone/models/coummunity_model.dart';
+import 'package:reddit_clone/responsive/responsive.dart';
 import 'package:reddit_clone/utils/pick_image.dart';
 
 class AddPostTypeScreen extends ConsumerStatefulWidget {
@@ -30,6 +32,7 @@ class _AddPostTypeScreenState extends ConsumerState<AddPostTypeScreen> {
   List<Community> communities = [];
   File? bannerFile;
   Community? selectedCommuntiy;
+  Uint8List? bannerWebFile;
 
   @override
   void dispose() {
@@ -42,6 +45,11 @@ class _AddPostTypeScreenState extends ConsumerState<AddPostTypeScreen> {
   void selecteBannerImage() async {
     final res = await pickImage();
     if (res != null) {
+      if (kIsWeb) {
+        setState(() {
+          bannerWebFile = res.files.first.bytes;
+        });
+      }
       setState(() {
         bannerFile = File(res.files.first.path!);
       });
@@ -50,13 +58,14 @@ class _AddPostTypeScreenState extends ConsumerState<AddPostTypeScreen> {
 
   void sharePosts(BuildContext context) {
     if (widget.type == 'image' &&
-        bannerFile != null &&
+        (bannerFile != null || bannerWebFile != null) &&
         titleController.text.isNotEmpty) {
       ref.read(postControllerProvider.notifier).shareImagePost(
             context: context,
             title: titleController.text,
             selectedCommunity: selectedCommuntiy ?? communities[0],
             file: bannerFile,
+            webFile: bannerWebFile,
           );
     } else if (widget.type == 'text' && titleController.text.isNotEmpty) {
       ref.read(postControllerProvider.notifier).shareTextPost(
@@ -91,111 +100,116 @@ class _AddPostTypeScreenState extends ConsumerState<AddPostTypeScreen> {
         actions: [
           TextButton(
             onPressed: () => sharePosts(context),
-            child:  Text("Share",
-            style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),),
+            child: Text(
+              "Share",
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.inversePrimary),
+            ),
           ),
         ],
       ),
       body: isLoading
           ? const Loader()
-          : Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                children: [
-                  TextField(
-                    controller: titleController,
-                    decoration: const InputDecoration(
-                      filled: true,
-                      hintText: "Enter title here",
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.all(18),
+          : Responsive(
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: titleController,
+                      decoration: const InputDecoration(
+                        filled: true,
+                        hintText: "Enter title here",
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.all(18),
+                      ),
+                      maxLength: 30,
                     ),
-                    maxLength: 30,
-                  ),
-                  const SizedBox(height: 10),
-                  if (isTypeImage)
-                    GestureDetector(
-                      onTap: selecteBannerImage,
-                      child: DottedBorder(
-                        dashPattern: const [10, 4],
-                        borderType: BorderType.RRect,
-                        radius: const Radius.circular(10),
-                        color: Theme.of(context).colorScheme.inversePrimary,
-                        child: Container(
-                          width: double.infinity,
-                          height: 150,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: bannerFile != null
-                              ? Image.file(bannerFile!)
-                              : const Center(
-                                  child: Icon(
-                                    Icons.camera_alt_outlined,
-                                    size: 40,
+                    const SizedBox(height: 10),
+                    if (isTypeImage)
+                      GestureDetector(
+                        onTap: selecteBannerImage,
+                        child: DottedBorder(
+                          dashPattern: const [10, 4],
+                          borderType: BorderType.RRect,
+                          radius: const Radius.circular(10),
+                          color: Theme.of(context).colorScheme.inversePrimary,
+                          child: Container(
+                            width: double.infinity,
+                            height: 150,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: bannerWebFile != null ? Image.memory(bannerWebFile!) : bannerFile != null
+                                ? Image.file(bannerFile!)
+                                : const Center(
+                                    child: Icon(
+                                      Icons.camera_alt_outlined,
+                                      size: 40,
+                                    ),
                                   ),
-                                ),
+                          ),
                         ),
                       ),
-                    ),
-                  if(isTypeText)
-                    TextField(
-                      controller: descriptionController,
-                      decoration: const InputDecoration(
-                        filled: true,
-                        hintText: "Enter description here",
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.all(18),
+                    if (isTypeText)
+                      TextField(
+                        controller: descriptionController,
+                        decoration: const InputDecoration(
+                          filled: true,
+                          hintText: "Enter description here",
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.all(18),
+                        ),
+                        maxLines: 5,
                       ),
-                      maxLines: 5,
-                    ),
-                  if(isTypeLink)
-                    TextField(
-                      controller: linkController,
-                      decoration: const InputDecoration(
-                        filled: true,
-                        hintText: "Enter link here",
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.all(18),
+                    if (isTypeLink)
+                      TextField(
+                        controller: linkController,
+                        decoration: const InputDecoration(
+                          filled: true,
+                          hintText: "Enter link here",
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.all(18),
+                        ),
+                      ),
+                    const SizedBox(height: 20),
+                    const Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        "Select Community",
                       ),
                     ),
-                  const SizedBox(height: 20),
-                  const Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      "Select Community",
-                    ),
-                  ),
-                  ref.watch(userCommunitiesProvider).when(
-                        data: (data) {
-                          communities = data;
-                          if (data.isEmpty) {
-                            return const SizedBox(
-                              child: Text("Join community"),
+                    ref.watch(userCommunitiesProvider).when(
+                          data: (data) {
+                            communities = data;
+                            if (data.isEmpty) {
+                              return const SizedBox(
+                                child: Text("Join community"),
+                              );
+                            }
+                            return DropdownButton(
+                              value: selectedCommuntiy ?? data[0],
+                              items: data
+                                  .map(
+                                    (e) => DropdownMenuItem(
+                                      value: e,
+                                      child: Text(e.name),
+                                    ),
+                                  )
+                                  .toList(),
+                              onChanged: (val) {
+                                setState(() {
+                                  selectedCommuntiy = val;
+                                });
+                              },
                             );
-                          }
-                          return DropdownButton(
-                            value: selectedCommuntiy ?? data[0],
-                            items: data
-                                .map(
-                                  (e) => DropdownMenuItem(
-                                    value: e,
-                                    child: Text(e.name),
-                                  ),
-                                )
-                                .toList(),
-                            onChanged: (val) {
-                              setState(() {
-                                selectedCommuntiy = val;
-                              });
-                            },
-                          );
-                        },
-                        error: (error, stackTrace) =>
-                            ErrorText(error: error.toString()),
-                        loading: () => const Loader(),
-                      ),
-                ],
+                          },
+                          error: (error, stackTrace) =>
+                              ErrorText(error: error.toString()),
+                          loading: () => const Loader(),
+                        ),
+                  ],
+                ),
               ),
             ),
     );

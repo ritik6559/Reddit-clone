@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -85,17 +86,21 @@ class CommunityController extends StateNotifier<bool> {
   void editCommunity(
       {required File? profileFile,
       required File? bannerFile,
+      required Uint8List? profileWebFile,
+      required Uint8List? bannerWebFile,
       required BuildContext context,
-      required Community community}) async {
+      required Community community,
+      }) async {
     state =
         true; //state = true is simply to know if we are in loading state or not.
-    if (profileFile != null) {
+    if (profileFile != null || profileWebFile != null) {
       //it will be stored as communities/profile/file_name.
       //if we change the profile another time it will be overrided.
       final res = await _storageRepository.storeFile(
         path: 'communities/profile',
         id: community.name,
         file: profileFile,
+        webFile: profileWebFile,
       );
 
       res.fold(
@@ -105,13 +110,14 @@ class CommunityController extends StateNotifier<bool> {
               ) //we cannot do community.avatar = r becuase avatar is final therefore we can't change its value.
           );
     }
-    if (bannerFile != null) {
+    if (bannerFile != null || bannerWebFile != null) {
       //it will be stored as communities/banner/file_name.
       //if we change the profile another time it will be overrided.
       final res = await _storageRepository.storeFile(
         path: 'communities/banner',
         id: community.name,
         file: bannerFile,
+        webFile: bannerWebFile,
       );
 
       res.fold(

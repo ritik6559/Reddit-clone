@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -39,18 +40,28 @@ class AuthRepository {
 
   FutureEither<UserModel> signInWithGoogle(bool isFromLogin) async {
     try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-
-      final googleAuth = await googleUser?.authentication;
-
-      final credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
-
       UserCredential userCredential;
-      if (isFromLogin) {
-        userCredential = await _auth.signInWithCredential(credential);
-      } else {//whne a user is a guest user and login from the community drawer then we want to change the user from anonymous to signed in user.
-        userCredential = await _auth.currentUser!.linkWithCredential(credential);
+      if (kIsWeb) {
+        //it will check if we are on we or not and authentication procedure is diff from web.
+        GoogleAuthProvider googleAuthProvider = GoogleAuthProvider();
+        googleAuthProvider
+            .addScope('https://www.googleapis.com/auth/contacts.readonly');
+        userCredential = await _auth.signInWithPopup(googleAuthProvider);
+      } else {
+        final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+
+        final googleAuth = await googleUser?.authentication;
+
+        final credential = GoogleAuthProvider.credential(
+            accessToken: googleAuth?.accessToken, idToken: googleAuth?.idToken);
+
+        if (isFromLogin) {
+          userCredential = await _auth.signInWithCredential(credential);
+        } else {
+          //whne a user is a guest user and login from the community drawer then we want to change the user from anonymous to signed in user.
+          userCredential =
+              await _auth.currentUser!.linkWithCredential(credential);
+        }
       }
 
       //all of this is standard code to get all the google accounts available on the device and to select an account to sign in the user.

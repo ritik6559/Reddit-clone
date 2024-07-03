@@ -6,6 +6,7 @@ import 'package:reddit_clone/components/post_card.dart';
 import 'package:reddit_clone/features/posts/controller/post_controller.dart';
 import 'package:reddit_clone/features/posts/widgets/comment_card.dart';
 import 'package:reddit_clone/models/post_model.dart';
+import 'package:reddit_clone/responsive/responsive.dart';
 
 class CommentsScreen extends ConsumerStatefulWidget {
   final String postId;
@@ -41,23 +42,25 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
               return Column(
                 children: [
                   PostCard(post: data),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: TextField(
-                      onSubmitted: (value) => addComment(data),
-                      controller: commentController,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.symmetric(vertical: 2,horizontal: 10),
-                        filled: true,
-                        hintText: "Add comments",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          borderSide: BorderSide.none
-                        ),
-                        suffix: IconButton(
-                          onPressed: () => addComment(data),
-                          icon: const Icon(
-                            Icons.send,
+                  Responsive(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: TextField(
+                        onSubmitted: (value) => addComment(data),
+                        controller: commentController,
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(vertical: 2,horizontal: 10),
+                          filled: true,
+                          hintText: "Add comments",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide.none
+                          ),
+                          suffix: IconButton(
+                            onPressed: () => addComment(data),
+                            icon: const Icon(
+                              Icons.send,
+                            ),
                           ),
                         ),
                       ),

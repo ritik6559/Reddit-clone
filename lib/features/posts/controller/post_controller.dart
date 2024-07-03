@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -21,8 +22,7 @@ final userPostsProvider =
   return postController.fetchUserPosts(communities);
 });
 
-final guestPostsProvider =
-    StreamProvider((ref ) {
+final guestPostsProvider = StreamProvider((ref) {
   final postController = ref.watch(postControllerProvider.notifier);
   return postController.fetchGuestPosts();
 });
@@ -144,12 +144,17 @@ class PostController extends StateNotifier<bool> {
     required String title,
     required Community selectedCommunity,
     required File? file,
+    required Uint8List? webFile,
   }) async {
     state = true;
     String postId = const Uuid().v1();
     final user = _ref.read(userProvider)!;
     final imageRes = await _storageRepository.storeFile(
-        path: 'posts/${selectedCommunity.name}', id: postId, file: file);
+      path: 'posts/${selectedCommunity.name}',
+      id: postId,
+      file: file,
+      webFile: webFile,
+    );
 
     imageRes.fold(
       (l) => showSnackBar(context, l.message),
@@ -269,14 +274,10 @@ class PostController extends StateNotifier<bool> {
         });
         Routemaster.of(context).pop();
       },
-      
     );
   }
 
-
   Stream<List<Post>> fetchGuestPosts() {
- 
-      return _postRepository.fetchGuestPosts();
-
+    return _postRepository.fetchGuestPosts();
   }
 }
