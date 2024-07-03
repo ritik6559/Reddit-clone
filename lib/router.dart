@@ -1,7 +1,3 @@
-//logged out route
-
-//logged in route
-
 import 'package:flutter/material.dart';
 import 'package:reddit_clone/features/auth/screen/login_screen.dart';
 import 'package:reddit_clone/features/community/screens/add_moderators.dart';
