@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddit_clone/components/snackbar.dart';
 import 'package:reddit_clone/core/enum/enums.dart';
@@ -166,8 +167,8 @@ class PostController extends StateNotifier<bool> {
 
         final res = await _postRepository.addPosts(post);
         _ref
-        .read(userProfileControllerProvider.notifier)
-        .updateUserKarma(UserKarma.imagePost);
+            .read(userProfileControllerProvider.notifier)
+            .updateUserKarma(UserKarma.imagePost);
         state = false;
 
         res.fold(
@@ -238,5 +239,31 @@ class PostController extends StateNotifier<bool> {
 
   Stream<List<Comment>> getComments(String postId) {
     return _postRepository.getComment(postId);
+  }
+
+  void awardPost({
+    required Post post,
+    required String award,
+    required BuildContext context,
+  }) async {
+    final user = _ref.read(userProvider)!;
+
+    final res = await _postRepository.awardPost(post, award, user.uid);
+
+    res.fold(
+      (l) => showSnackBar(context, l.message),
+      (r) {
+        _ref
+            .read(userProfileControllerProvider.notifier)
+            .updateUserKarma(UserKarma.awardPost);
+
+        _ref.read(userProvider.notifier).update((state) {
+          state?.awards.remove(award);
+          return state;
+        });
+        Routemaster.of(context).pop();
+      },
+      
+    );
   }
 }
