@@ -38,54 +38,50 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
       appBar: AppBar(),
       body: ref.watch(getPostByIdProvider(widget.postId)).when(
             data: (data) {
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    PostCard(post: data),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: TextField(
-                        onSubmitted: (value) => addComment(data),
-                        controller: commentController,
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.all(5),
-                          filled: true,
-                          hintText: "Add comments",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide: BorderSide.none
-                          ),
-                          suffix: IconButton(
-                            onPressed: () => addComment(data),
-                            icon: const Icon(
-                              Icons.send,
-                            ),
+              return Column(
+                children: [
+                  PostCard(post: data),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: TextField(
+                      onSubmitted: (value) => addComment(data),
+                      controller: commentController,
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(vertical: 2,horizontal: 10),
+                        filled: true,
+                        hintText: "Add comments",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: BorderSide.none
+                        ),
+                        suffix: IconButton(
+                          onPressed: () => addComment(data),
+                          icon: const Icon(
+                            Icons.send,
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 40),
-                    SingleChildScrollView(
-                      child: ref.watch(getCommentsProvider(widget.postId)).when(
-                            data: (data) {
-                              return Expanded(
-                                child: ListView.builder(
-                                  itemCount: data.length,
-                                  itemBuilder: (context, index) {
-                                    final comment = data[index];
-                                    return CommentCard(comment: comment);
-                                  },
-                                ),
-                              );
-                            },
-                            error: (error, stackTrace){
-                              return ErrorText(error: error.toString());
-                            },
-                            loading: () => const Loader(),
-                          ),
-                    ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 40),
+                  ref.watch(getCommentsProvider(widget.postId)).when(
+                        data: (data) {
+                          return Expanded(
+                            child: ListView.builder(
+                              itemCount: data.length,
+                              itemBuilder: (context, index) {
+                                final comment = data[index];
+                                return CommentCard(comment: comment);
+                              },
+                            ),
+                          );
+                        },
+                        error: (error, stackTrace){
+                          return ErrorText(error: error.toString());
+                        },
+                        loading: () => const Loader(),
+                      ),
+                ],
               );
             },
             error: (error, stackTrace) => ErrorText(error: error.toString()),

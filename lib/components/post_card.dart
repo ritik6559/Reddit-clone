@@ -1,5 +1,6 @@
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddit_clone/components/error_txt.dart';
 import 'package:reddit_clone/components/loader.dart';
@@ -230,6 +231,42 @@ class PostCard extends ConsumerWidget {
                                         ErrorText(error: error.toString()),
                                     loading: () => const Loader(),
                                   ),
+                              IconButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Dialog(
+                                          backgroundColor: Colors.transparent,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(20),
+                                            child: GridView.builder(
+                                              shrinkWrap: true,
+                                              gridDelegate:
+                                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                                crossAxisCount: 4,
+                                              ),
+                                              itemCount: user.awards.length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                final award =
+                                                    user.awards[index];
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Image.asset(
+                                                      Constants.awards[award]!),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  icon:
+                                      const Icon(Icons.card_giftcard_outlined))
                             ],
                           ),
                         ],
@@ -241,7 +278,7 @@ class PostCard extends ConsumerWidget {
             ],
           ),
         ),
-       const SizedBox(height: 10)
+        const SizedBox(height: 10)
       ],
     );
   }

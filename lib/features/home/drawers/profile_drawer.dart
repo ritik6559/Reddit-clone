@@ -39,7 +39,7 @@ class _ProfileDrawerState extends ConsumerState<ProfileDrawer> {
             ),
             const SizedBox(height: 10),
             Text(
-              "u/${user.name},",
+              "u/${user.name}",
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
