@@ -1,16 +1,25 @@
-# reddit_clone
+# Reddit Clone
 
-A new Flutter project.
+A feature-rich Reddit clone built with Flutter, Firebase, and Riverpod.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- 📝 Create, edit, and delete posts
+- 👍👎 Like and dislike posts
+- 💬 Add comments to posts
+- 🏘️ Join and create communities
+- 🏅 Award posts
+- 🔐 User authentication
+- 🖼️ Image and link sharing
+- 🌓 Dark mode support
 
-A few resources to get you started if this is your first Flutter project:
+## Tech Stack
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- **Frontend**: Flutter
+- **Backend**: Firebase
+- **State Management**: Riverpod
+- **Authentication**: Firebase Auth
+- **Database**: Cloud Firestore
+- **Storage**: Firebase Storage
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
